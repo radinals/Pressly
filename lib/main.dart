@@ -29,74 +29,79 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late List<ArticleData> articles;
-
-  @override
-  void initState() async {
-    super.initState();
-    articles = await Article.fetchArticles();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: articles.length,
-        itemBuilder: (context, index) {
-          final article = articles[index];
-          final title = article.articleData['title'];
-          final author = article.articleData['author'];
-          final url = Text(article.articleData['url']);
+      body: FutureBuilder(future: Article.fetchArticles(), builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text("ERROR: ${snapshot.error}"));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text("No Articles Found"));
+        }
 
-          if (title == null || author == null || url == null) return Text("--");
+        final articles = snapshot.data;
 
-          return Card(
-            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: article.articleData['urlToImage'] != null
-                        ? Image.network(
-                            article.articleData['urlToImage'],
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                const Icon(Icons.broken_image),
-                          )
-                        : const Icon(Icons.image_not_supported),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          author,
-                          style: const TextStyle(color: Colors.grey),
-                        ),
-                      ],
+        return ListView.builder(
+          itemCount: articles?.length,
+          itemBuilder: (context, index) {
+            final article = articles![index];
+            final title = article.articleData['title'];
+            final author = article.articleData['author'];
+            final url = Text(article.articleData['url']);
+
+            if (title == null || author == null || url == null) return Text("--");
+
+            return Card(
+              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: article.articleData['urlToImage'] != null
+                          ? Image.network(
+                        article.articleData['urlToImage'],
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                        const Icon(Icons.broken_image),
+                      )
+                          : const Icon(Icons.image_not_supported),
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            author,
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
-      ),
+            );
+          },
+        );
+      })
     );
   }
 }
