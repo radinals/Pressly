@@ -46,6 +46,10 @@ linked_*.ds
 unlinked.ds
 unlinked_spec.ds
 
+# IntelliJ / Android Studio
+.idea/
+*.iml
+
 # Android related
 **/android/**/gradle-wrapper.jar
 .gradle/
