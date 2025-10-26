@@ -28,7 +28,23 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+
 class _HomeScreenState extends State<HomeScreen> {
+  late Future<List<ArticleData>> articleList;
+
+  void _getArticles() async  {
+    setState(() {
+      articleList = Article.fetchArticles() ;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getArticles();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,8 +53,12 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.red,
         foregroundColor: Colors.white,
       ),
-      body: FutureBuilder(
-        future: Article.fetchArticles(),
+      body: GestureDetector(
+        onHorizontalDragDown: (details) {
+          _getArticles();
+        },
+          child: FutureBuilder(
+        future: this.articleList,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -54,11 +74,11 @@ class _HomeScreenState extends State<HomeScreen> {
             itemCount: articles?.length,
             itemBuilder: (context, index) {
               final article = articles![index];
-              final title = article.articleData['title'];
-              final author = article.articleData['author'];
-              final url = Text(article.articleData['url']);
+              final title = article.data['title'];
+              final author = article.data['author'];
+              final url = Text(article.data['url']);
 
-              if (title == null || author == null || url == null)
+              if (title == null || author == null)
                 return Text("--");
 
               return Card(
@@ -71,9 +91,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       SizedBox(
                         width: 100,
                         height: 100,
-                        child: article.articleData['urlToImage'] != null
+                        child: article.data['urlToImage'] != null
                             ? Image.network(
-                                article.articleData['urlToImage'],
+                                article.data['urlToImage'],
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) =>
                                     const Icon(Icons.broken_image),
@@ -109,6 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           );
         },
+      ),
       ),
     );
   }

@@ -5,11 +5,12 @@ class ArticleData {
 
   const ArticleData(this._articleData);
 
-  Map<String, dynamic> get articleData => _articleData;
+  Map<String, dynamic> get data => _articleData;
 }
 
 class Article {
   static final supabase = Supabase.instance.client;
+
 
   static Future<List<ArticleData>> fetchArticles() async {
     final response = await supabase.from('news_json')
