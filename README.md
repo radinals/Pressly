@@ -1,6 +1,6 @@
 # Aplikasi Pressly - Portal Berita Formal dan Terpercaya
 
-## Deskripsi
+## Deskripsi Aplikasi
 Aplikasi Mobile Berita adalah platform yang dirancang untuk memudahkan pengguna dalam membaca berita terbaru dari berbagai kategori. Aplikasi ini menampilkan berita terkini secara real-time dengan tampilan yang sederhana, cepat, dan mudah digunakan.
 
 ## Fitur Utama
@@ -26,12 +26,7 @@ Aplikasi Mobile Berita adalah platform yang dirancang untuk memudahkan pengguna 
 Aplikasi ini dikembangkan untuk memberikan pengalaman membaca berita yang cepat, informatif, dan mudah diakses kapan saja dan di mana saja.
 
 ## Struktur Fitur
-- Halaman Utama (daftar berita terbaru)
-- Halaman Kategori
-- Halaman Detail Berita
-- Halaman Favorit
-- Fitur Pencarian
-- Halaman Profil Pengguna
+- belum tersedia listnya
 
 ## Catatan
 Proyek ini masih dapat dikembangkan lebih lanjut untuk menambahkan fitur seperti notifikasi berita terbaru, mode gelap, dan integrasi dengan sistem komentar pembaca.
