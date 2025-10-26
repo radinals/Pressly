@@ -1,4 +1,4 @@
-# Pressly
+# Aplikasi Pressly - Portal Berita Formal dan Terpercaya
 
 ## Deskripsi
 Aplikasi Mobile Berita adalah platform yang dirancang untuk memudahkan pengguna dalam membaca berita terbaru dari berbagai kategori. Aplikasi ini menampilkan berita terkini secara real-time dengan tampilan yang sederhana, cepat, dan mudah digunakan.
